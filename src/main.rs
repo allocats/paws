@@ -108,6 +108,16 @@ fn print_cwd_notes(notes: &NotesData) {
     }
 }
 
+fn print_global_notes(notes: &NotesData) {
+    if let Some(dir_notes) = notes.notes.get("global") {
+        for (id, note) in &dir_notes.notes {
+            println!("{}: {}", id, note);
+        }
+    } else {
+        println!("No global notes");
+    }
+}
+
 fn main() {
     let args = Args::parse();
     let mut notes = load_notes();
@@ -133,7 +143,11 @@ fn main() {
         },
        
         None => {
-            print_cwd_notes(&notes);
+            if args.global {
+                print_global_notes(&notes);
+            } else {
+                print_cwd_notes(&notes);
+            }
         }
     }
 }
