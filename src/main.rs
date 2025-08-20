@@ -99,22 +99,38 @@ fn print_cwd_notes(notes: &NotesData) {
         .to_string_lossy()
         .to_string();
 
-    if let Some(dir_notes) = notes.notes.get(&cwd) {
-        for (id, note) in &dir_notes.notes {
-            println!("{}: {}", id, note);
+    match notes.notes.get(&cwd) {
+        Some(dir_notes) => {
+            if dir_notes.notes.is_empty() {
+                println!("No notes for this directory");
+            } else {
+                println!("Notes for {}:", cwd);
+
+                for (id, note) in &dir_notes.notes {
+                    println!("\t{}: {}", id, note);
+                }
+            }
         }
-    } else {
-        println!("No notes for this directory");
+
+        None => println!("No notes for this directory"),
     }
 }
 
 fn print_global_notes(notes: &NotesData) {
-    if let Some(dir_notes) = notes.notes.get("global") {
-        for (id, note) in &dir_notes.notes {
-            println!("{}: {}", id, note);
+    match notes.notes.get("global") {
+        Some(dir_notes) => {
+            if dir_notes.notes.is_empty() {
+                println!("No global notes");
+            } else {
+                println!("Global notes:");
+
+                for (id, note) in &dir_notes.notes {
+                    println!("\t{}: {}", id, note);
+                }
+            }
         }
-    } else {
-        println!("No global notes");
+
+        None => println!("No global notes"),
     }
 }
 
